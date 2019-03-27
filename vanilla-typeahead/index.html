@@ -80,10 +80,49 @@
             <ul id="list"></ul>
         </div>
     </div>
-
 </body>
 
 <script>
+    let characters = [];
+    let list = document.getElementById("list")
+    let search = document.querySelector("input")
+    
+  
+    
+    fetch('https://www.swapi.co/api/people/')
+    .then(response => response.json())
+    .then(response => {characters.push(...response.results);})
+     
+    list.style.display = 'none'
+
+    function render(array){
+        const html = array.join('')
+        list.innerHTML = html
+    }
+
+    function filterText(){
+        let filtered = characters.filter(val => val.name.toLowerCase().includes(this.value.toLowerCase()))
+        .map(val => `<li>${val.name}</li>`)
+        if(filtered.length) render(filtered);
+        
+        if(!search.value) {
+        list.style.display = 'none'
+    } else {
+        list.style.display = 'block'
+    }
+    }
+
+    const selected = [];
+    search.addEventListener('keyup', filterText);
+    list.addEventListener('click', function(event){
+            //console.log('string')
+        //for(let i = 0; i < selected.length; i++){
+           // if(selected[i] !== event.target.innerText)    
+            selected.push(event.target.innerText)
+        })
+        
+    
+
 </script>
 
 </html>
